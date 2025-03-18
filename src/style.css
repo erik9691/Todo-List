@@ -10,10 +10,20 @@ a
     text-decoration: none;
     color: inherit;
 }
+button
+{
+    border: none;
+    cursor: pointer;
+}
 body
 {
     display: grid;
     grid-template: 1fr / 1fr 4fr;
+}
+dialog
+{
+    margin: auto;
+    padding: auto;
 }
 
 .sidebar
@@ -39,21 +49,6 @@ body
         width: 1em;
     }
 }
-.add-todo-button
-{
-    border: none;
-    cursor: pointer;
-    color: white;
-    background-color: rgb(214, 16, 16);
-    font-size: 60px;
-    width: 1.3em;
-    height: 1.3em;
-    border-radius: 50%;
-
-    position: absolute;
-    bottom: 8%;
-    right: 5%;
-}
 
 .todo-grid
 {
@@ -77,5 +72,59 @@ body
     .duedate
     {
         margin-top: 2%;
+    }
+}
+
+.add-todo-button
+{
+    color: white;
+    background-color: rgb(214, 16, 16);
+    font-size: 60px;
+    width: 1.3em;
+    height: 1.3em;
+    border-radius: 50%;
+
+    position: absolute;
+    bottom: 8%;
+    right: 5%;
+}
+
+.add-todo-modal
+{
+    padding: 2%;
+    border: 2px solid rgb(175, 175, 175);
+    border-radius: 15px;
+
+    .close-todo-button
+    {
+        position: absolute;
+        top: 2%;
+        right: 3%;
+        color: red;
+        background-color: white;
+        font-weight: 600;
+        font-size: 20px;
+    }
+    form
+    {
+        display: flex;
+        flex-direction: column;
+        input,textarea
+        {
+            margin: 0 0 1em 0;
+            font-size: 20px;
+        }
+        button
+        {
+            color: white;
+            font-weight: 600;
+            font-size: 25px;
+            border-radius: 20px;
+            margin-top: 20px;
+            padding: 0.3em 0;
+            width: 50%;
+            align-self: center;
+            background-color: rgb(214, 16, 16);;
+        }
     }
 }

@@ -1,4 +1,4 @@
-export {AddTodoToGrid};
+export {AddTodoToGrid, ClearGrid};
 
 function AddTodoToGrid (todo)
 {
@@ -22,4 +22,13 @@ function AddTodoToGrid (todo)
 
     const todoGrid = document.querySelector(".todo-grid");
     todoGrid.appendChild(divTodoItem);
+}
+
+function ClearGrid ()
+{
+    const todoGridItems = Array.from(document.querySelector(".todo-grid").childNodes);
+
+    todoGridItems.forEach((item) =>{
+        item.remove();
+    });
 }

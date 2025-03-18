@@ -29,7 +29,23 @@
                 <p class="duedate">10:00 AM</p>
             </div>
         </div>
-        <button class="add-todo-button">+</button>
+        <button data-open-modal class="add-todo-button">+</button>
     </section>
+
+    <dialog class="add-todo-modal">
+        <button class="close-todo-button">X</button>
+        <form class="add-todo-form" action="index.js" method="post">
+            <label for="title-text">Title</label>
+            <input type="text" name="todoTitle" id="title-text" required>
+
+            <label for="description-text">Description</label>
+            <textarea name="todoDescription" id="description-text" cols="30" rows="10"></textarea>
+
+            <label for="duedate-date">Due Date</label>
+            <input type="date" name="todoDueDate" id="duedate-datetime" required>
+
+            <button type="submit">Add</button>
+        </form>
+    </dialog>
 </body>
 </html>
