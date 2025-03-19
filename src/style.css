@@ -49,6 +49,13 @@ dialog
         width: 1em;
     }
 }
+.add-project
+{
+    p
+    {
+        font-size: 35px;
+    }
+}
 
 .todo-grid
 {
