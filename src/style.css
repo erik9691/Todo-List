@@ -43,7 +43,7 @@ dialog
     width: 100%;
     gap: 2%;
     align-items: center;
-    img
+    img,svg
     {
         height: 1em;
         width: 1em;
@@ -69,6 +69,7 @@ dialog
     border: 2px solid rgb(224, 224, 224);
     border-radius: 15px;
     padding: 2% 2%;
+    position: relative;
 
     .title
     {
@@ -79,6 +80,22 @@ dialog
     .duedate
     {
         margin-top: 2%;
+    }
+    .edit img
+    {
+        position: absolute;
+        bottom: 10%;
+        right: 3%;
+        width: 2em;
+        height: 2em;
+    }
+    .remove img
+    {
+        position: absolute;
+        top: 10%;
+        right: 3.5%;
+        width: 1.6em;
+        height: 1.6em;
     }
 }
 

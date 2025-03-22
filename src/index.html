@@ -25,7 +25,7 @@
             <textarea name="todoDescription" id="description-text" cols="30" rows="10"></textarea>
 
             <label for="duedate-date">Due Date</label>
-            <input type="date" name="todoDueDate" id="duedate-datetime" required>
+            <input type="datetime-local" name="todoDueDate" id="duedate-datetime" required>
 
             <button type="submit">Add</button>
         </form>
@@ -36,6 +36,22 @@
         <form class="add-project-form" action="index.js" method="post">
             <label for="title-text">Title</label>
             <input type="text" name="projectTitle" id="title-text" required>
+
+            <button type="submit">Add</button>
+        </form>
+    </dialog>
+
+    <dialog class="modal edit-todo-modal">
+        <button class="close-modal-button close-edit-button">X</button>
+        <form class="edit-todo-form" action="index.js" method="post">
+            <label for="title-text">Title</label>
+            <input type="text" name="editTitle" id="title-text" required>
+
+            <label for="description-text">Description</label>
+            <textarea name="editDescription" id="description-text" cols="30" rows="10"></textarea>
+
+            <label for="duedate-date">Due Date</label>
+            <input type="datetime-local" name="editDueDate" id="duedate-datetime" required>
 
             <button type="submit">Add</button>
         </form>

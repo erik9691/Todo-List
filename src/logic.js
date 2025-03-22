@@ -2,12 +2,15 @@ export {Todo, Project};
 
 class Todo 
 {
+    static #lastindex = -1;
+    index;
+
     constructor(title, description, dueDate, priority)
     {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.priority = priority;
+        this.index = ++Todo.#lastindex;
     }
 }
 
