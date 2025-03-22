@@ -9,7 +9,12 @@ const addTodoButton = document.querySelector(".add-todo-button");
 const addTodoModal = document.querySelector(".add-todo-modal");
 const closeTodoButton = document.querySelector(".close-todo-button");
 const addTodoForm = document.querySelector(".add-todo-form");
+
 const addProjectButton = document.querySelector(".add-project");
+const addProjectModal = document.querySelector(".add-project-modal");
+const closeProjectButton = document.querySelector(".close-project-button");
+const addProjectForm = document.querySelector(".add-project-form");
+
 
 function AddEventListeners ()
 {
@@ -42,7 +47,21 @@ function AddEventListeners ()
     {
         e.preventDefault();
 
-        todoProjects.push(new Project("Work"));
+        addProjectModal.showModal();
+    });
+    closeProjectButton.addEventListener("click", function (e)
+    {
+        addProjectModal.close();
+    });
+    addProjectForm.addEventListener("submit", function (e)
+    {
+        e.preventDefault();
+
+        addProjectModal.showModal();
+
+        const projectTitle = document.querySelector('input[name="projectTitle"]').value;
+
+        todoProjects.push(new Project(projectTitle));
 
         let newProjectButton = AddProjectToSidebar(todoProjects.slice(-1)[0]);
 
@@ -60,6 +79,9 @@ function AddEventListeners ()
                 AddTodoToGrid(todo);
             });
         });
+
+        addProjectModal.close();
+        addProjectForm.reset();
     });
     
 }

@@ -96,13 +96,13 @@ dialog
     right: 5%;
 }
 
-.add-todo-modal
+.modal
 {
     padding: 2%;
     border: 2px solid rgb(175, 175, 175);
     border-radius: 15px;
 
-    .close-todo-button
+    .close-modal-button
     {
         position: absolute;
         top: 2%;

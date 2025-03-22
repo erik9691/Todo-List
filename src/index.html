@@ -15,8 +15,8 @@
         <button data-open-modal class="add-todo-button">+</button>
     </section>
 
-    <dialog class="add-todo-modal">
-        <button class="close-todo-button">X</button>
+    <dialog class="modal add-todo-modal">
+        <button class="close-modal-button close-todo-button">X</button>
         <form class="add-todo-form" action="index.js" method="post">
             <label for="title-text">Title</label>
             <input type="text" name="todoTitle" id="title-text" required>
@@ -26,6 +26,16 @@
 
             <label for="duedate-date">Due Date</label>
             <input type="date" name="todoDueDate" id="duedate-datetime" required>
+
+            <button type="submit">Add</button>
+        </form>
+    </dialog>
+
+    <dialog class="modal add-project-modal">
+        <button class="close-modal-button close-project-button">X</button>
+        <form class="add-project-form" action="index.js" method="post">
+            <label for="title-text">Title</label>
+            <input type="text" name="projectTitle" id="title-text" required>
 
             <button type="submit">Add</button>
         </form>
