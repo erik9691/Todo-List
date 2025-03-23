@@ -119,7 +119,9 @@ function LoadTodos()
     ClearGrid();
     todoProjects[currentTodoProject].todos.forEach(todo => 
     {
-        const editTodoButton = AddTodoToGrid(todo).querySelector(".edit");
+        const addedTodo = AddTodoToGrid(todo);
+
+        const editTodoButton = addedTodo.querySelector(".edit");
 
         editTodoButton.addEventListener("click", function (e)
         {
@@ -133,6 +135,15 @@ function LoadTodos()
 
             currentEditedTodo = todo.id;
         });
+
+        const removeTodoButton = addedTodo.querySelector(".remove");
+
+        removeTodoButton.addEventListener("click", function (e)
+        {
+            e.preventDefault();
+
+            DeleteTodo(todo);
+        });
     });
 }
 
@@ -144,7 +155,22 @@ function EditTodo(todo, newTitle, newDescription, newDueDate)
     LoadTodos();
 }
 
+function DeleteTodo(todoToDelete)
+{
+    for (const [i, todo] of todoProjects[currentTodoProject].todos.entries()) 
+    {
+        if (todo === todoToDelete)
+        {
+            todoProjects[currentTodoProject].todos.splice(i, 1);
+        }
+    }
+    LoadTodos();
+}
+
 AddEventListeners();
 
 CreateProject("Gym");
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
 CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
