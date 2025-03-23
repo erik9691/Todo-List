@@ -22,6 +22,8 @@ const editTodoForm = document.querySelector(".edit-todo-form");
 
 const sidebarLinks = document.querySelectorAll(".sidebar-link");
 
+const allTodos = document.querySelector(".all-todos");
+
 function AddEventListeners ()
 {
     sidebarLinks.forEach(link => 
@@ -99,6 +101,11 @@ function AddEventListeners ()
         editTodoModal.close();
         editTodoForm.reset();
     });
+
+    allTodos.addEventListener("click", function (e)
+    {
+        LoadAllTodos();
+    });
 }
 
 function CreateProject(title)
@@ -163,31 +170,37 @@ function LoadTodos()
     ClearGrid();
     todoProjects[currentTodoProject].todos.forEach(todo => 
     {
-        const addedTodo = AddTodoToGrid(todo);
+        LoadTodo(todo);
+    });
+    addTodoButton.style.visibility='visible';
+}
 
-        const editTodoButton = addedTodo.querySelector(".edit");
+function LoadTodo(todo)
+{
+    const addedTodo = AddTodoToGrid(todo);
 
-        editTodoButton.addEventListener("click", function (e)
-        {
-            e.preventDefault();
+    const editTodoButton = addedTodo.querySelector(".edit");
 
-            editTodoModal.showModal();
+    editTodoButton.addEventListener("click", function (e)
+    {
+        e.preventDefault();
 
-            document.querySelector('input[name="editTitle"]').value = todo.title;
-            document.querySelector('textarea[name="editDescription"]').value = todo.description;
-            document.querySelector('input[name="editDueDate"]').value = todo.date;
+        editTodoModal.showModal();
 
-            currentEditedTodo = todo.id;
-        });
+        document.querySelector('input[name="editTitle"]').value = todo.title;
+        document.querySelector('textarea[name="editDescription"]').value = todo.description;
+        document.querySelector('input[name="editDueDate"]').value = todo.date;
 
-        const removeTodoButton = addedTodo.querySelector(".remove");
+        currentEditedTodo = todo.id;
+    });
 
-        removeTodoButton.addEventListener("click", function (e)
-        {
-            e.preventDefault();
+    const removeTodoButton = addedTodo.querySelector(".remove");
 
-            DeleteTodo(todo);
-        });
+    removeTodoButton.addEventListener("click", function (e)
+    {
+        e.preventDefault();
+
+        DeleteTodo(todo);
     });
 }
 
@@ -209,6 +222,19 @@ function DeleteTodo(todoToDelete)
         }
     });
     LoadTodos();
+}
+
+function LoadAllTodos()
+{
+    ClearGrid();
+    todoProjects.forEach(project => 
+    {
+        project.todos.forEach(todo => 
+        {
+            LoadTodo(todo);
+        });
+    });
+    addTodoButton.style.visibility='hidden';
 }
 
 AddEventListeners();

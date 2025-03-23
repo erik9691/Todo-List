@@ -96,6 +96,8 @@ function AddProjectToSidebar (project)
 
     const sidebar = document.querySelector(".project-links");
     sidebar.appendChild(aSelect);
+    
+    DisableProjectDeleteButton();
 
     return divProjectLink;
 }
@@ -121,8 +123,6 @@ function createHashtagSVG (color = "black")
 
 function AddSelectedColorListeners (link)
 {
-    console.log("ADDING LISTENER TO: "+link.classList);
-
     link.addEventListener("click", function (e)
     {
         e.preventDefault();
@@ -131,11 +131,22 @@ function AddSelectedColorListeners (link)
 
         sidebarLinks.forEach(link => 
         {
-            console.log("REMOVING CLASS FROM: "+link.classList);
             link.classList.remove("selected");
         });
 
         e.target.classList.add("selected");
-        console.log("ADDING CLASS TO: "+ e.target.classList);
     });
+}
+
+function DisableProjectDeleteButton()
+{
+    const projects = document.querySelectorAll(".project-link");
+    if (projects.length === 1)
+    {
+        projects[0].querySelector(".remove-project").style.visibility='hidden';
+    }
+    else
+    {
+        projects[0].querySelector(".remove-project").style.visibility='visible';
+    }
 }
