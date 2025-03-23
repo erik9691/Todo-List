@@ -1,6 +1,7 @@
 import "./style.css";
 import { Todo, Project } from "./logic";
 import { AddTodoToGrid, ClearGrid, AddProjectToSidebar, ClearSideBar, AddSelectedColorListeners} from "./display";
+import { differenceInCalendarDays } from "date-fns";
 
 let todoProjects = [];
 let currentTodoProject = 0;
@@ -24,6 +25,8 @@ const sidebarLinks = document.querySelectorAll(".sidebar-link");
 
 const allTodos = document.querySelector(".all-todos");
 const completedTodos = document.querySelector(".completed-todos");
+const todayTodos = document.querySelector(".today-todos");
+const upcomingTodos = document.querySelector(".upcoming-todos");
 
 function AddEventListeners ()
 {
@@ -110,6 +113,14 @@ function AddEventListeners ()
     completedTodos.addEventListener("click", function (e)
     {
         LoadCompletedTodos();
+    });
+    todayTodos.addEventListener("click", function (e)
+    {
+        LoadTodayTodos();
+    });
+    upcomingTodos.addEventListener("click", function (e)
+    {
+        LoadUpcomingTodos();
     });
 }
 
@@ -268,6 +279,38 @@ function LoadCompletedTodos()
         project.todos.forEach(todo => 
         {
             if (todo.completed) 
+            {
+                LoadTodo(todo);
+            }
+        });
+    });
+    addTodoButton.style.visibility='hidden';
+}
+
+function LoadTodayTodos()
+{
+    ClearGrid();
+    todoProjects.forEach(project => 
+    {
+        project.todos.forEach(todo => 
+        {
+            if (differenceInCalendarDays(todo.dueDate,new Date) < 1) 
+            {
+                LoadTodo(todo);
+            }
+        });
+    });
+    addTodoButton.style.visibility='hidden';
+}
+
+function LoadUpcomingTodos()
+{
+    ClearGrid();
+    todoProjects.forEach(project => 
+    {
+        project.todos.forEach(todo => 
+        {
+            if (differenceInCalendarDays(todo.dueDate,new Date) < 7) 
             {
                 LoadTodo(todo);
             }
