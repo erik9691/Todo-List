@@ -5,6 +5,8 @@ class Todo
     static #lastindex = -1;
     index;
 
+    completed = false;
+
     constructor(title, description, dueDate, priority)
     {
         this.title = title;

@@ -23,6 +23,7 @@ const editTodoForm = document.querySelector(".edit-todo-form");
 const sidebarLinks = document.querySelectorAll(".sidebar-link");
 
 const allTodos = document.querySelector(".all-todos");
+const completedTodos = document.querySelector(".completed-todos");
 
 function AddEventListeners ()
 {
@@ -105,6 +106,10 @@ function AddEventListeners ()
     allTodos.addEventListener("click", function (e)
     {
         LoadAllTodos();
+    });
+    completedTodos.addEventListener("click", function (e)
+    {
+        LoadCompletedTodos();
     });
 }
 
@@ -202,6 +207,13 @@ function LoadTodo(todo)
 
         DeleteTodo(todo);
     });
+
+    const completeTodoCheckbox = addedTodo.querySelector(".todo-checkbox");
+
+    completeTodoCheckbox.addEventListener("click", function (e)
+    {
+        CompleteTodo(todo, e.target.checked);
+    });
 }
 
 function EditTodo(todo, newTitle, newDescription, newDueDate)
@@ -224,6 +236,17 @@ function DeleteTodo(todoToDelete)
     LoadTodos();
 }
 
+function CompleteTodo(todoToComplete, value)
+{
+    todoProjects[currentTodoProject].todos.forEach((todo, i) => 
+    {
+        if (todo === todoToComplete)
+        {
+            todoProjects[currentTodoProject].todos[i].completed = value;
+        }
+    });
+}
+
 function LoadAllTodos()
 {
     ClearGrid();
@@ -232,6 +255,22 @@ function LoadAllTodos()
         project.todos.forEach(todo => 
         {
             LoadTodo(todo);
+        });
+    });
+    addTodoButton.style.visibility='hidden';
+}
+
+function LoadCompletedTodos()
+{
+    ClearGrid();
+    todoProjects.forEach(project => 
+    {
+        project.todos.forEach(todo => 
+        {
+            if (todo.completed) 
+            {
+                LoadTodo(todo);
+            }
         });
     });
     addTodoButton.style.visibility='hidden';

@@ -29,6 +29,7 @@ function AddTodoToGrid (todo)
     aEdit.href = "";
     imgRemove.src = removeIcon;
     aRemove.href = "";
+    inputCheckbox.checked = todo.completed;
 
     const textContainer = document.createElement("div");
     textContainer.classList.add("text-container");
