@@ -1,6 +1,6 @@
 import "./style.css";
 import { Todo, Project } from "./logic";
-import { AddTodoToGrid, ClearGrid, AddProjectToSidebar, ClearSideBar } from "./display";
+import { AddTodoToGrid, ClearGrid, AddProjectToSidebar, ClearSideBar, AddSelectedColorListeners} from "./display";
 
 let todoProjects = [];
 let currentTodoProject = 0;
@@ -20,8 +20,18 @@ const editTodoModal = document.querySelector(".edit-todo-modal");
 const closeEditButton = document.querySelector(".close-edit-button");
 const editTodoForm = document.querySelector(".edit-todo-form");
 
+const sidebarLinks = document.querySelectorAll(".sidebar-link");
+
 function AddEventListeners ()
 {
+    sidebarLinks.forEach(link => 
+    {
+        if (!link.classList.contains("add-project")) 
+        {
+            AddSelectedColorListeners(link);
+        }
+    });
+
     addTodoButton.addEventListener("click", function (e)
     {
         addTodoModal.showModal();
@@ -94,7 +104,6 @@ function AddEventListeners ()
 function CreateProject(title)
 {
     todoProjects.push(new Project(title));
-
     LoadProjects();
 }
 
@@ -105,18 +114,16 @@ function LoadProjects()
     {
         const selectProjectButton = AddProjectToSidebar(project);
 
+        AddSelectedColorListeners(selectProjectButton.closest(".sidebar-link"));
+
         selectProjectButton.addEventListener("click", function (e)
         {
             e.preventDefault();
 
-            console.log("ENTER");
-
             todoProjects.forEach((project, i) => 
             {
-                console.log("IM IN");
                 if (project.index === parseInt(e.target.closest("div").id)) 
                 {
-                    console.log(i);
                     currentTodoProject = i;
                 }
             });
@@ -211,46 +218,6 @@ CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"
 CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
 CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
 CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
 
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
-CreateProject("BABA");
+CreateProject("Gym");
+CreateProject("Gym");

@@ -3,16 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Todo List</title>
 </head>
 <body>
     <nav class="sidebar">
-        <a href=""><div class="sidebar-link add-project"><p>+</p> Add New Project</div></a>
+        <p class="logo">To-Do Guru</p>
+        <div class="general-links">
+            <a href=""><div class="sidebar-link today-todos"><img src="./icons/today.svg" alt="">Today</div></a>
+            <a href=""><div class="sidebar-link upcoming-todos"><img src="./icons/upcoming.svg" alt="">Upcoming</div></a>
+            <a href=""><div class="sidebar-link completed-todos"><img src="./icons/completed.svg" alt="">Completed</div></a>
+            <a href=""><div class="sidebar-link all-todos"><img src="./icons/all-todos.svg" alt="">All Tasks</div></a>
+        </div>
+        <p class="header">Projects</p>
+        <div class="project-links">
+            <a href=""><div class="sidebar-link add-project"><p class="add-icon">+</p><p class="link-title">Add New Project</p></div></a>
+        </div>
     </nav>
     <section class="content">
         <div class="todo-grid">
         </div>
-        <button data-open-modal class="add-todo-button">+</button>
+        <button class="add-icon add-todo-button">+</button>
     </section>
 
     <dialog class="modal add-todo-modal">

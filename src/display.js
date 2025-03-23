@@ -1,4 +1,4 @@
-export {AddTodoToGrid, ClearGrid, AddProjectToSidebar, ClearSideBar};
+export {AddTodoToGrid, ClearGrid, AddProjectToSidebar, ClearSideBar, AddSelectedColorListeners};
 import removeIcon from "./icons/remove.svg";
 import editIcon from "./icons/edit.svg";
 import { format } from "date-fns";
@@ -12,26 +12,34 @@ function AddTodoToGrid (todo)
     const aEdit = document.createElement("a");
     const imgRemove = document.createElement("img");
     const aRemove = document.createElement("a");
+    const inputCheckbox = document.createElement("input");
 
     pTitle.classList.add("title");
     pDescription.classList.add("description");
     pDueDate.classList.add("duedate");
     aEdit.classList.add("edit");
     aRemove.classList.add("remove");
+    inputCheckbox.type = "checkbox";
+    inputCheckbox.classList.add("todo-checkbox");
 
     pTitle.innerText = todo.title;
     pDescription.innerText = todo.description;
-    pDueDate.innerText = format(todo.dueDate, "PPpp");
+    pDueDate.innerText = format(todo.dueDate, "d MMM y p");
     imgEdit.src = editIcon;
     aEdit.href = "";
     imgRemove.src = removeIcon;
     aRemove.href = "";
 
+    const textContainer = document.createElement("div");
+    textContainer.classList.add("text-container");
+    textContainer.appendChild(pTitle);
+    textContainer.appendChild(pDescription);
+    textContainer.appendChild(pDueDate);
+
     const divTodoItem = document.createElement("div");
     divTodoItem.classList.add("todo-item");
-    divTodoItem.appendChild(pTitle);
-    divTodoItem.appendChild(pDescription);
-    divTodoItem.appendChild(pDueDate);
+    divTodoItem.appendChild(inputCheckbox);
+    divTodoItem.appendChild(textContainer);
     aEdit.appendChild(imgEdit);
     divTodoItem.appendChild(aEdit);
     aRemove.appendChild(imgRemove);
@@ -86,13 +94,14 @@ function AddProjectToSidebar (project)
     aSelect.href = "";
     aSelect.appendChild(divProjectLink);
 
-    const sidebar = document.querySelector(".sidebar");
+    const sidebar = document.querySelector(".project-links");
     sidebar.appendChild(aSelect);
 
     return divProjectLink;
 }
 
-function createHashtagSVG(color = "black") {
+function createHashtagSVG (color = "black") 
+{
     const xmlns = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(xmlns, "svg");
     svg.setAttribute("xmlns", xmlns);
@@ -108,4 +117,25 @@ function createHashtagSVG(color = "black") {
     svg.appendChild(path);
 
     return svg;
+}
+
+function AddSelectedColorListeners (link)
+{
+    console.log("ADDING LISTENER TO: "+link.classList);
+
+    link.addEventListener("click", function (e)
+    {
+        e.preventDefault();
+
+        const sidebarLinks = document.querySelectorAll(".sidebar-link");
+
+        sidebarLinks.forEach(link => 
+        {
+            console.log("REMOVING CLASS FROM: "+link.classList);
+            link.classList.remove("selected");
+        });
+
+        e.target.classList.add("selected");
+        console.log("ADDING CLASS TO: "+ e.target.classList);
+    });
 }
