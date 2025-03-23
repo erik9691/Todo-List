@@ -1,4 +1,4 @@
-export {AddTodoToGrid, ClearGrid, AddProjectToSidebar};
+export {AddTodoToGrid, ClearGrid, AddProjectToSidebar, ClearSideBar};
 import removeIcon from "./icons/remove.svg";
 import editIcon from "./icons/edit.svg";
 import { format } from "date-fns";
@@ -47,30 +47,47 @@ function ClearGrid ()
 {
     const todoGridItems = Array.from(document.querySelector(".todo-grid").childNodes);
 
-    todoGridItems.forEach((item) =>{
+    todoGridItems.forEach((item) =>
+    {
         item.remove();
+    });
+}
+
+function ClearSideBar ()
+{
+    const sidebarProjects = Array.from(document.querySelectorAll(".project-link"));
+
+    sidebarProjects.forEach((project) =>
+    {
+        project.parentNode.remove();
     });
 }
 
 function AddProjectToSidebar (project)
 {
-    const a = document.createElement("a");
+    const aSelect = document.createElement("a");
     const divProjectLink = document.createElement("div");
     const pProjectName = document.createElement("p");
     const imgProject = createHashtagSVG("rgb("+ Math.floor(Math.random()*256) + "," + Math.floor(Math.random()*256) + "," + Math.floor(Math.random()*256) + ")");
+    const imgRemove = document.createElement("img");
+    const aRemove = document.createElement("a");
+
+    pProjectName.innerText = project.title;
+    imgRemove.src = removeIcon;
+    aRemove.classList.add("remove-project");
+    aRemove.appendChild(imgRemove);
 
     divProjectLink.classList.add("sidebar-link", "project-link");
     divProjectLink.appendChild(imgProject);
-    pProjectName.innerText = project.title;
-
     divProjectLink.appendChild(pProjectName);
+    divProjectLink.appendChild(aRemove);
     divProjectLink.id = project.index;
 
-    a.href = "";
-    a.appendChild(divProjectLink);
+    aSelect.href = "";
+    aSelect.appendChild(divProjectLink);
 
     const sidebar = document.querySelector(".sidebar");
-    sidebar.appendChild(a);
+    sidebar.appendChild(aSelect);
 
     return divProjectLink;
 }

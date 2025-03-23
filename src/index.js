@@ -1,6 +1,6 @@
 import "./style.css";
 import { Todo, Project } from "./logic";
-import { AddTodoToGrid, ClearGrid, AddProjectToSidebar } from "./display";
+import { AddTodoToGrid, ClearGrid, AddProjectToSidebar, ClearSideBar } from "./display";
 
 let todoProjects = [];
 let currentTodoProject = 0;
@@ -95,15 +95,52 @@ function CreateProject(title)
 {
     todoProjects.push(new Project(title));
 
-    const selectProjectButton = AddProjectToSidebar(todoProjects.slice(-1)[0]);
+    LoadProjects();
+}
 
-    selectProjectButton.addEventListener("click", function (e)
+function LoadProjects()
+{
+    ClearSideBar();
+    todoProjects.forEach(project => 
     {
-        e.preventDefault();
+        const selectProjectButton = AddProjectToSidebar(project);
 
-        currentTodoProject = parseInt(e.target.closest("div").id);
+        selectProjectButton.addEventListener("click", function (e)
+        {
+            e.preventDefault();
 
-        LoadTodos();
+            console.log("ENTER");
+
+            todoProjects.forEach((project, i) => 
+            {
+                console.log("IM IN");
+                if (project.index === parseInt(e.target.closest("div").id)) 
+                {
+                    console.log(i);
+                    currentTodoProject = i;
+                }
+            });
+            
+            LoadTodos();
+        });
+
+        const removeProjectButton = selectProjectButton.querySelector(".remove-project");
+
+        removeProjectButton.addEventListener("click", function (e)
+        {
+            e.preventDefault();
+
+            todoProjects.forEach((project, i) => 
+            {
+                if (project.index === parseInt(e.target.closest("div").id)) 
+                {
+                    todoProjects.splice(i, 1)
+                    LoadProjects();
+                }
+            });
+
+            parseInt(e.target.parentElement.id)
+        });
     });
 }
 
@@ -157,13 +194,13 @@ function EditTodo(todo, newTitle, newDescription, newDueDate)
 
 function DeleteTodo(todoToDelete)
 {
-    for (const [i, todo] of todoProjects[currentTodoProject].todos.entries()) 
+    todoProjects[currentTodoProject].todos.forEach((todo, i) => 
     {
         if (todo === todoToDelete)
         {
             todoProjects[currentTodoProject].todos.splice(i, 1);
         }
-    }
+    });
     LoadTodos();
 }
 
@@ -174,3 +211,46 @@ CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"
 CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
 CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
 CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
+CreateProject("BABA");
