@@ -3,6 +3,8 @@ import removeIcon from "./icons/remove.svg";
 import editIcon from "./icons/edit.svg";
 import { format } from "date-fns";
 
+
+
 function AddTodoToGrid (todo)
 {
     const pTitle = document.createElement("p");
@@ -49,6 +51,8 @@ function AddTodoToGrid (todo)
     const todoGrid = document.querySelector(".todo-grid");
     todoGrid.appendChild(divTodoItem);
 
+    ToggleHoverVisibilityTodo(divTodoItem);
+
     return divTodoItem;
 }
 
@@ -77,7 +81,7 @@ function AddProjectToSidebar (project)
     const aSelect = document.createElement("a");
     const divProjectLink = document.createElement("div");
     const pProjectName = document.createElement("p");
-    const imgProject = createHashtagSVG("rgb("+ Math.floor(Math.random()*256) + "," + Math.floor(Math.random()*256) + "," + Math.floor(Math.random()*256) + ")");
+    const imgProject = createHashtagSVG(project.color);
     const imgRemove = document.createElement("img");
     const aRemove = document.createElement("a");
 
@@ -97,8 +101,8 @@ function AddProjectToSidebar (project)
 
     const sidebar = document.querySelector(".project-links");
     sidebar.appendChild(aSelect);
-    
-    DisableProjectDeleteButton();
+
+    ToggleHoverVisibilityProject(divProjectLink);
 
     return divProjectLink;
 }
@@ -139,15 +143,48 @@ function AddSelectedColorListeners (link)
     });
 }
 
-function DisableProjectDeleteButton()
+function ToggleHoverVisibilityTodo(todo)
 {
+    todo.querySelector(".edit").style.visibility='hidden';
+    todo.querySelector(".remove").style.visibility='hidden';
+
+    todo.addEventListener("mouseover", function (e)
+    {
+        todo.querySelector(".edit").style.visibility='visible';
+        todo.querySelector(".remove").style.visibility='visible';
+    });
+    todo.addEventListener("mouseout", function (e)
+    {
+        todo.querySelector(".edit").style.visibility='hidden';
+        todo.querySelector(".remove").style.visibility='hidden';
+    });
+}
+
+function ToggleHoverVisibilityProject(project)
+{
+    project.querySelector(".remove-project").style.visibility='hidden';
+
     const projects = document.querySelectorAll(".project-link");
+
+    console.log("PROJECTS 1: ");
+    console.log(projects[0]);
+    console.log("CURRENT PROJECT : ");
+    console.log(project);
+
+    const revealButton = function(event) {console.log(event.target); event.target.closest(".project-link").querySelector(".remove-project").style.visibility='visible';}
+    const hideButton = function(event) {console.log(event.target); event.target.closest(".project-link").querySelector(".remove-project").style.visibility='hidden';}
+
+    project.addEventListener("mouseover", revealButton);
+    project.addEventListener("mouseout", hideButton);
+
     if (projects.length === 1)
     {
-        projects[0].querySelector(".remove-project").style.visibility='hidden';
+        project.removeEventListener("mouseover", revealButton);
+        project.removeEventListener("mouseout", hideButton);
     }
-    else
+    else if (projects.length === 2)
     {
-        projects[0].querySelector(".remove-project").style.visibility='visible';
+        projects[0].addEventListener("mouseover", revealButton);
+        projects[0].addEventListener("mouseout", hideButton);
     }
 }

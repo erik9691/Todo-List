@@ -7,7 +7,7 @@ class Todo
 
     completed = false;
 
-    constructor(title, description, dueDate, priority)
+    constructor(title, description, dueDate)
     {
         this.title = title;
         this.description = description;
@@ -19,8 +19,11 @@ class Todo
 class Project 
 {
     todos = [];
+
     static #lastindex = -1;
     index;
+    
+    color = "rgb("+ Math.floor(Math.random()*256) + "," + Math.floor(Math.random()*256) + "," + Math.floor(Math.random()*256) + ")";
 
     constructor(title)
     {
