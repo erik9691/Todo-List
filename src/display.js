@@ -47,6 +47,7 @@ function AddTodoToGrid (todo)
     divTodoItem.appendChild(aEdit);
     aRemove.appendChild(imgRemove);
     divTodoItem.appendChild(aRemove);
+    divTodoItem.id = todo.index;
 
     const todoGrid = document.querySelector(".todo-grid");
     todoGrid.appendChild(divTodoItem);
@@ -166,13 +167,8 @@ function ToggleHoverVisibilityProject(project)
 
     const projects = document.querySelectorAll(".project-link");
 
-    console.log("PROJECTS 1: ");
-    console.log(projects[0]);
-    console.log("CURRENT PROJECT : ");
-    console.log(project);
-
-    const revealButton = function(event) {console.log(event.target); event.target.closest(".project-link").querySelector(".remove-project").style.visibility='visible';}
-    const hideButton = function(event) {console.log(event.target); event.target.closest(".project-link").querySelector(".remove-project").style.visibility='hidden';}
+    const revealButton = function(event) {event.target.closest(".project-link").querySelector(".remove-project").style.visibility='visible';}
+    const hideButton = function(event) {event.target.closest(".project-link").querySelector(".remove-project").style.visibility='hidden';}
 
     project.addEventListener("mouseover", revealButton);
     project.addEventListener("mouseout", hideButton);

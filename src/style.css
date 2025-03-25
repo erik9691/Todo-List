@@ -105,6 +105,12 @@ dialog
     }
 }
 
+.content
+{
+    display: flex;
+    flex-direction: column;
+}
+
 .todo-grid
 {
     display: grid;
@@ -173,6 +179,33 @@ dialog
         display: flex;
         flex-direction: column;
         gap: 5px;
+    }
+}
+
+.sort
+{
+    align-self: flex-end;
+    margin: 2% 6% 2% 0;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    pointer-events:none;
+
+    img
+    {
+        width: 2em;
+        height: 2em;
+        pointer-events:all;
+    }
+    select
+    {
+        all: unset;
+        font-size: inherit;
+        user-select: none;
+        text-align: right;
+        pointer-events:all;
     }
 }
 

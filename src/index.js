@@ -2,10 +2,15 @@ import "./style.css";
 import { Todo, Project } from "./logic";
 import { AddTodoToGrid, ClearGrid, AddProjectToSidebar, ClearSideBar, AddSelectedColorListeners} from "./display";
 import { differenceInCalendarDays } from "date-fns";
+import sortAscending from "./icons/sort-ascending.svg";
+import sortDescending from "./icons/sort-descending.svg";
 
 let todoProjects = [];
 let currentTodoProject = 0;
 let currentEditedTodo = 0;
+let currentSort = "added";
+let currentSortDirection = "ascending"
+let currentView = "project";
 
 const addTodoButton = document.querySelector(".add-todo-button");
 const addTodoModal = document.querySelector(".add-todo-modal");
@@ -28,6 +33,57 @@ const completedTodos = document.querySelector(".completed-todos");
 const todayTodos = document.querySelector(".today-todos");
 const upcomingTodos = document.querySelector(".upcoming-todos");
 
+const sortSelect = document.querySelector("select[name='sortSelect']");
+const sortOrder = document.querySelector(".sort-order");
+
+
+//LOGIC
+function CreateProject(title)
+{
+    todoProjects.push(new Project(title));
+    LoadProjects();
+}
+
+function CreateTodo(title, description, dueDate)
+{
+    todoProjects[currentTodoProject].todos.push(new Todo(title, description, dueDate));
+
+    ReloadCurrentTodos();
+}
+
+function EditTodo(todo, newTitle, newDescription, newDueDate)
+{
+    todo.title = newTitle;
+    todo.description = newDescription;
+    todo.dueDate = newDueDate;
+    ReloadCurrentTodos();
+}
+
+function DeleteTodo(todoToDelete)
+{
+    todoProjects[currentTodoProject].todos.forEach((todo, i) => 
+    {
+        if (todo === todoToDelete)
+        {
+            todoProjects[currentTodoProject].todos.splice(i, 1);
+        }
+    });
+    ReloadCurrentTodos();
+}
+
+function CompleteTodo(todoToComplete, value)
+{
+    todoProjects[currentTodoProject].todos.forEach((todo, i) => 
+    {
+        if (todo === todoToComplete)
+        {
+            todoProjects[currentTodoProject].todos[i].completed = value;
+        }
+    });
+}
+
+
+//DISPLAY
 function AddEventListeners ()
 {
     sidebarLinks.forEach(link => 
@@ -122,12 +178,29 @@ function AddEventListeners ()
     {
         LoadUpcomingTodos();
     });
-}
 
-function CreateProject(title)
-{
-    todoProjects.push(new Project(title));
-    LoadProjects();
+    sortSelect.addEventListener("change", function (e)
+    {
+        currentSort = e.target.value;
+        ReloadCurrentTodos();
+    });
+    sortOrder.addEventListener("click", function (e)
+    {
+        if (e.target.value === "ascending") 
+        {
+            e.target.value = "descending";
+            currentSortDirection = e.target.value;
+            e.target.src = sortDescending;
+        }
+        else
+        {
+            e.target.value = "ascending";
+            currentSortDirection = e.target.value;
+            e.target.src = sortAscending;
+        }
+
+        ReloadCurrentTodos();
+    });
 }
 
 function LoadProjects()
@@ -151,7 +224,7 @@ function LoadProjects()
                 }
             });
             
-            LoadTodos();
+            LoadProjectTodos();
         });
 
         const removeProjectButton = selectProjectButton.querySelector(".remove-project");
@@ -172,23 +245,6 @@ function LoadProjects()
             parseInt(e.target.parentElement.id)
         });
     });
-}
-
-function CreateTodo(title, description, dueDate)
-{
-    todoProjects[currentTodoProject].todos.push(new Todo(title, description, dueDate));
-
-    LoadTodos();
-}
-
-function LoadTodos()
-{
-    ClearGrid();
-    todoProjects[currentTodoProject].todos.forEach(todo => 
-    {
-        LoadTodo(todo);
-    });
-    addTodoButton.style.visibility='visible';
 }
 
 function LoadTodo(todo)
@@ -227,104 +283,201 @@ function LoadTodo(todo)
     });
 }
 
-function EditTodo(todo, newTitle, newDescription, newDueDate)
+function ReloadCurrentTodos()
 {
-    todo.title = newTitle;
-    todo.description = newDescription;
-    todo.dueDate = newDueDate;
-    LoadTodos();
+    switch (currentView) 
+    {
+        case "all":
+            LoadAllTodos();
+            break;
+        case "completed":
+            LoadCompletedTodos();
+            break;
+        case "today":
+            LoadTodayTodos();
+            break;
+        case "upcoming":
+            LoadUpcomingTodos();
+            break;
+        case "project":
+            LoadProjectTodos();
+            break;
+    }
 }
 
-function DeleteTodo(todoToDelete)
+function LoadProjectTodos()
 {
-    todoProjects[currentTodoProject].todos.forEach((todo, i) => 
-    {
-        if (todo === todoToDelete)
-        {
-            todoProjects[currentTodoProject].todos.splice(i, 1);
-        }
-    });
-    LoadTodos();
-}
+    currentView = "project";
+    ClearGrid();
+    const todosToSort = [];
 
-function CompleteTodo(todoToComplete, value)
-{
-    todoProjects[currentTodoProject].todos.forEach((todo, i) => 
+    todoProjects[currentTodoProject].todos.forEach(todo => 
     {
-        if (todo === todoToComplete)
-        {
-            todoProjects[currentTodoProject].todos[i].completed = value;
-        }
+        todosToSort.push(todo);
     });
+
+    const sortedTodos = SortTodos(todosToSort);
+
+    sortedTodos.forEach(todo => 
+    {
+        LoadTodo(todo);
+    });
+
+    addTodoButton.style.visibility='visible';
 }
 
 function LoadAllTodos()
 {
+    currentView = "all";
     ClearGrid();
+    const todosToSort = [];
+
     todoProjects.forEach(project => 
     {
         project.todos.forEach(todo => 
         {
-            LoadTodo(todo);
+            todosToSort.push(todo);
         });
     });
+
+    const sortedTodos = SortTodos(todosToSort);
+
+    sortedTodos.forEach(todo => 
+    {
+        LoadTodo(todo);
+    });
+
     addTodoButton.style.visibility='hidden';
 }
 
 function LoadCompletedTodos()
 {
+    currentView = "completed";
     ClearGrid();
+    const todosToSort = [];
+
     todoProjects.forEach(project => 
     {
         project.todos.forEach(todo => 
         {
             if (todo.completed) 
             {
-                LoadTodo(todo);
+                todosToSort.push(todo);
             }
         });
     });
+
+    const sortedTodos = SortTodos(todosToSort);
+
+    sortedTodos.forEach(todo => 
+    {
+        LoadTodo(todo);
+    });
+
     addTodoButton.style.visibility='hidden';
 }
 
 function LoadTodayTodos()
 {
+    currentView = "today";
     ClearGrid();
+    const todosToSort = [];
+
     todoProjects.forEach(project => 
     {
         project.todos.forEach(todo => 
         {
             if (differenceInCalendarDays(todo.dueDate,new Date) < 1) 
             {
-                LoadTodo(todo);
+                todosToSort.push(todo);
             }
         });
     });
+
+    const sortedTodos = SortTodos(todosToSort);
+
+    sortedTodos.forEach(todo => 
+    {
+        LoadTodo(todo);
+    });
+
     addTodoButton.style.visibility='hidden';
 }
 
 function LoadUpcomingTodos()
 {
+    currentView = "upcoming";
     ClearGrid();
+    const todosToSort = [];
+
     todoProjects.forEach(project => 
     {
         project.todos.forEach(todo => 
         {
             if (differenceInCalendarDays(todo.dueDate,new Date) < 7) 
             {
-                LoadTodo(todo);
+                todosToSort.push(todo);
             }
         });
     });
+
+    const sortedTodos = SortTodos(todosToSort);
+
+    sortedTodos.forEach(todo => 
+    {
+        LoadTodo(todo);
+    });
+
     addTodoButton.style.visibility='hidden';
+}
+
+function SortTodos(todosToSort)
+{
+    let sortedTodos;
+
+    switch (currentSort) 
+    {
+        case "added":
+            if (currentSortDirection === "ascending") 
+            {
+                sortedTodos = todosToSort.toSorted((a, b) => a.index - b.index);
+            }
+            else
+            {
+                sortedTodos = todosToSort.toSorted((a, b) => b.index - a.index);
+            }
+            break;
+        case "date":
+            if (currentSortDirection === "ascending") 
+            {
+                sortedTodos = todosToSort.toSorted((a, b) => a.dueDate - b.dueDate);
+            }
+            else
+            {
+                sortedTodos = todosToSort.toSorted((a, b) => b.dueDate - a.dueDate);
+            }
+            break;
+        case "completed":
+            if (currentSortDirection === "ascending") 
+            {
+                sortedTodos = todosToSort.toSorted((a, b) => a.completed - b.completed);
+            }
+            else
+            {
+                sortedTodos = todosToSort.toSorted((a, b) => b.completed - a.completed);
+            }
+            break;
+    }
+
+    return sortedTodos;
 }
 
 AddEventListeners();
 
 CreateProject("Gym");
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
-CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 24, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 26, 2025 16:30:00"));
+CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 23, 2025 16:30:00"));
 CreateTodo("Pullups","Do 5 sets of 7 pullups",new Date("March 28, 2025 16:30:00"));
 
 CreateProject("Gym");
