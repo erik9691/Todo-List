@@ -1,10 +1,13 @@
-export { CreateProject, CreateTodo, EditTodo, DeleteTodo, CompleteTodo, SortTodos };
+export { CreateProject, CreateTodo, EditTodo, DeleteTodo, CompleteTodo, SortTodos, LoadFromStorage, DeleteProject};
 import { LoadProjects, ReloadCurrentTodos, currentSort, currentSortDirection, currentTodoProject } from "./display.js";
 export let todoProjects = [];
 
+let lastLoadedProjectIndex = -1;
+let lastLoadedTodoIndex = -1;
+
 class Todo 
 {
-    static #lastindex = -1;
+    static #lastindex = lastLoadedProjectIndex;
     index;
 
     completed = false;
@@ -22,7 +25,7 @@ class Project
 {
     todos = [];
 
-    static #lastindex = -1;
+    static #lastindex = lastLoadedTodoIndex;
     index;
     
     color = "rgb("+ Math.floor(Math.random()*256) + "," + Math.floor(Math.random()*256) + "," + Math.floor(Math.random()*256) + ")";
@@ -38,13 +41,31 @@ function CreateProject(title)
 {
     todoProjects.push(new Project(title));
     LoadProjects();
+    
+    SaveToStorage();
+}
+
+function DeleteProject(projectToDelete)
+{
+    todoProjects.forEach((project, i) => 
+    {
+        if (project.index === projectToDelete.index) 
+        {
+            todoProjects.splice(i, 1)
+            LoadProjects();
+        }
+    });
+
+    SaveToStorage();
 }
 
 function CreateTodo(title, description, dueDate)
 {
     todoProjects[currentTodoProject].todos.push(new Todo(title, description, dueDate));
-
     ReloadCurrentTodos();
+
+    console.log(todoProjects);
+    SaveToStorage();
 }
 
 function EditTodo(todo, newTitle, newDescription, newDueDate)
@@ -53,6 +74,8 @@ function EditTodo(todo, newTitle, newDescription, newDueDate)
     todo.description = newDescription;
     todo.dueDate = newDueDate;
     ReloadCurrentTodos();
+
+    SaveToStorage();
 }
 
 function DeleteTodo(todoToDelete)
@@ -65,6 +88,8 @@ function DeleteTodo(todoToDelete)
         }
     });
     ReloadCurrentTodos();
+
+    SaveToStorage();
 }
 
 function CompleteTodo(todoToComplete, value)
@@ -76,6 +101,8 @@ function CompleteTodo(todoToComplete, value)
             todoProjects[currentTodoProject].todos[i].completed = value;
         }
     });
+
+    SaveToStorage();
 }
 
 function SortTodos(todosToSort)
@@ -117,4 +144,29 @@ function SortTodos(todosToSort)
     }
 
     return sortedTodos;
+}
+
+function SaveToStorage()
+{
+    localStorage.setItem("storedProject", JSON.stringify(todoProjects));
+    localStorage.setItem("projectIndex", JSON.stringify(lastLoadedProjectIndex));
+    localStorage.setItem("todoIndex", JSON.stringify(lastLoadedTodoIndex));
+}
+
+function LoadFromStorage()
+{
+    if (localStorage.getItem("storedProject") !== null) 
+    {
+        todoProjects = JSON.parse(localStorage.getItem("storedProject"));
+        LoadProjects();
+        //ReloadCurrentTodos();
+    }
+    if (localStorage.getItem("projectIndex") !== null) 
+    {
+       lastLoadedProjectIndex = JSON.parse(localStorage.getItem("projectIndex"));
+    }
+    if (localStorage.getItem("todoIndex") !== null) 
+    {
+        lastLoadedTodoIndex = JSON.parse(localStorage.getItem("todoIndex"));
+    }
 }

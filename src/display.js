@@ -1,5 +1,5 @@
 export { Start, LoadProjects, ReloadCurrentTodos, currentSortDirection, currentTodoProject, currentSort};
-import { CreateProject, CreateTodo, EditTodo, DeleteTodo, CompleteTodo, SortTodos, todoProjects } from "./logic.js";
+import { CreateProject, CreateTodo, EditTodo, DeleteTodo, CompleteTodo, SortTodos, todoProjects, DeleteProject } from "./logic.js";
 import removeIcon from "./icons/remove.svg";
 import editIcon from "./icons/edit.svg";
 import sortAscending from "./icons/sort-ascending.svg";
@@ -365,12 +365,11 @@ function LoadProjects()
         {
             e.preventDefault();
 
-            todoProjects.forEach((project, i) => 
+            todoProjects.forEach((project) => 
             {
                 if (project.index === parseInt(e.target.closest("div").id)) 
                 {
-                    todoProjects.splice(i, 1)
-                    LoadProjects();
+                    DeleteProject(project);
                 }
             });
 
@@ -515,7 +514,7 @@ function LoadTodayTodos()
     {
         project.todos.forEach(todo => 
         {
-            if (differenceInCalendarDays(todo.dueDate,new Date) < 1) 
+            if (differenceInCalendarDays(todo.dueDate,new Date) === 0) 
             {
                 todosToSort.push(todo);
             }
@@ -541,7 +540,7 @@ function LoadUpcomingTodos()
     {
         project.todos.forEach(todo => 
         {
-            if (differenceInCalendarDays(todo.dueDate,new Date) < 7) 
+            if (differenceInCalendarDays(todo.dueDate,new Date) < 7 && differenceInCalendarDays(todo.dueDate,new Date) >= 0) 
             {
                 todosToSort.push(todo);
             }
